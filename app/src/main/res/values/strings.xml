@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">RunningTracker</string>
+
+    <string name="opinionChip1">awful</string>
+    <string name="opinionChip2">bad</string>
+    <string name="opinionChip3">average</string>
+    <string name="opinionChip4">good</string>
+    <string name="opinionChip5">great</string>
+
+    <string name="weatherChip1">snowing</string>
+    <string name="weatherChip2">raining</string>
+    <string name="weatherChip3">cloudy</string>
+    <string name="weatherChip4">cloudySun</string>
+    <string name="weatherChip5">sunny</string>
+
+    <string name="typeChip1">walk</string>
+    <string name="typeChip2">run</string>
+    <string name="typeChip3">bike</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!--    TODO: Add placeholder texts-->
 </resources>

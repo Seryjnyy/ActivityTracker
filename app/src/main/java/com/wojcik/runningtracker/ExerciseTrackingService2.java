@@ -15,6 +15,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.LiveData;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -22,10 +23,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.wojcik.runningtracker.room.ExerciseEntity;
 import com.wojcik.runningtracker.utility.Calculate;
 import com.wojcik.runningtracker.utility.TextFormatter;
 
-public class ExerciseTrackingService extends Service {
+public class ExerciseTrackingService2 extends Service {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
 
@@ -33,6 +35,19 @@ public class ExerciseTrackingService extends Service {
     private final String CHANNEL_ID = "100";
     private NotificationManager notificationManager;
     private NotificationCompat.Builder notificationBuilder;
+
+    private Location lastLocationUsedForDistanceTraveled;
+
+    private float MIN_ACC_METERS_FOR_DISTANCE_TRAVELED = 30;
+    private float MAX_WALKING_SPEED = 2;
+
+
+    private float firstCollectedDistance;
+    private Location lastLocationReceived;
+
+    // Gettable
+    private float distanceTraveled = 0;
+    private float time = 0;
 
 
     private Notification buildNotification() {
@@ -52,48 +67,23 @@ public class ExerciseTrackingService extends Service {
         return notificationBuilder.build();
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        setUpLocationTracking();
+        Log.d("created", "created");
 
         // Create notification channel
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
         CharSequence name = "Running tracker channel";
         String description = "Channel for Running tracker app";
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);
         notificationManager.createNotificationChannel(channel);
+
+        startForeground(NOTIFICATION_ID, buildNotification());
     }
-
-    private Location lastLocationUsedForDistanceTraveled;
-
-
-    private float MIN_ACC_METERS_FOR_DISTANCE_TRAVELED = 30;
-    private float MAX_WALKING_SPEED = 2;
-
-
-    private Location lastLocationReceived;
-    private float distanceTraveled = 0;
-    private float time = 0;
-    private float avgPace = 0;
-
-    public float getCumulativeDistanceTraveled() {
-        return distanceTraveled - firstCollectedDistance;
-    }
-
-    public float getCumulativeTime() {
-        return time;
-    }
-
-    public float getAveragePace(){
-        return Calculate.calculateAvgPace(getCumulativeTime(), getCumulativeDistanceTraveled());
-    }
-
-    private float firstCollectedDistance;
 
     private void setUpLocationTracking(){
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -127,10 +117,9 @@ public class ExerciseTrackingService extends Service {
                             }
 
                             distanceTraveled += lastLocationReceived.distanceTo(lastLocationUsedForDistanceTraveled);
-                            avgPace = (time/60) / (getCumulativeDistanceTraveled()/1000);
+
                             Log.d("DistanceTraveled", ""+ getCumulativeDistanceTraveled());
 
-                            Log.d("Pace", ""+avgPace);
                             // Update last valid location
                             lastLocationUsedForDistanceTraveled.set(lastLocationReceived);
 
@@ -157,24 +146,36 @@ public class ExerciseTrackingService extends Service {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private void startTrackingLocation(){
-        startForeground(NOTIFICATION_ID, buildNotification());
 
+    private void startTrackingLocation(){
         LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).build();
 
         try{
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+            tracking = true;
         }catch (SecurityException e){
             Log.d("ExerciseTrackingService", e.getMessage());
         }
 
     }
-
     private void stopTrackingLocation(){
         fusedLocationClient.removeLocationUpdates(locationCallback);
+        tracking = false;
     }
 
-    private void stopTrackingService(){
+    private boolean tracking = false;
+
+    protected void startTracking(){
+        Log.d("started", "started");
+        if(tracking)
+            return;
+
+        setUpLocationTracking();
+        startTrackingLocation();
+    }
+
+    protected void stopTracking(){
+        Log.d("stopped", "stopped");
         stopTrackingLocation();
         stopForeground(true);
         stopSelf();
@@ -183,39 +184,33 @@ public class ExerciseTrackingService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-
-        return new ExerciseTrackingBinder();
+        Log.d("bound", "bounded");
+        return new ExerciseTrackingBinder2();
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        stopTrackingService();
-        Log.d("onUnbind", "trying to unbind");
 
+        Log.d("unbound", "unbounded");
         return super.onUnbind(intent);
     }
 
-    public class ExerciseTrackingBinder extends Binder implements IBinder{
-        // Service related
-        public void stopService(){stopTrackingService();};
 
-        // Tracking related
-        public void startTracking(){startTrackingLocation();};
-        public void stopTracking(){stopTrackingLocation();};
 
-        // Getters for data
-        public float getDistanceTraveled(){return getCumulativeDistanceTraveled();}
-        public float getTime(){return getCumulativeTime();}
-        public float getAvgPace(){return getAveragePace();}
+    public class ExerciseTrackingBinder2 extends Binder implements IBinder{
 
+        public void startTrackingService(){startTracking();}
+        public void stopTrackingService(){stopTracking();}
+        public float getDistance(){return getCumulativeDistanceTraveled();}
+        public float getTime(){return getCumulativeDistanceTraveled();}
     }
 
-    public Location getLastLocationReceived() {
-        return lastLocationReceived;
+    public float getCumulativeDistanceTraveled() {
+        return distanceTraveled - firstCollectedDistance;
     }
 
-    public void setLastLocationReceived(Location lastLocationReceived) {
-        this.lastLocationReceived = lastLocationReceived;
+    public float getCumulativeTime() {
+        return time;
     }
 
 }
