@@ -52,14 +52,6 @@ public class AnnotatingViewModel extends AndroidViewModel {
                 type));
     }
 
-    public void showStuff(){
-        if(repository.getAllExercises().getValue() == null)
-            return;
-
-        Log.d("the stuff", ""+repository.getAllExercises().getValue().toString());
-    }
-
-
     public void setOpinion(String opinion) {
         this.opinion = opinion;
     }

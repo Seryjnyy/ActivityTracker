@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="672dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/stopTracking"
@@ -21,21 +21,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/avgPaceText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="51dp"
-            android:layout_marginEnd="51dp"
-            android:text="TextView" />
+            android:text="@string/distancePlaceholder"
+            android:textSize="30dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/totalTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/timePlaceholder"
+            android:textSize="30dp" />
+
+        <TextView
+
+            android:id="@+id/avgPaceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="51dp"
+            android:layout_marginEnd="51dp"
+            android:text="@string/pacePlaceholder"
+            android:textSize="20dp" />
+
 
     </LinearLayout>
 

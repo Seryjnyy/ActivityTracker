@@ -27,10 +27,12 @@
                     android:id="@+id/statsToday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Today" />
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:text="Today"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/statsTodayDistanceText"
@@ -68,15 +70,18 @@
                     android:id="@+id/statsMonth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    android:text="Month" />
+                    android:gravity="center_horizontal"
+                    android:text="Month"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/statsMonthDistanceText"
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="TextView" />
 
                 <TextView
@@ -84,6 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
                     android:text="TextView" />
 
             </LinearLayout>
@@ -106,15 +112,18 @@
                     android:id="@+id/statsYear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    android:text="Year" />
+                    android:textSize="20dp"
+                    android:gravity="center_horizontal"
+                    android:text="Year"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/statsYearDistanceText"
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="TextView" />
 
                 <TextView
@@ -122,6 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
                     android:text="TextView" />
 
             </LinearLayout>

@@ -73,19 +73,19 @@ public class ExerciseActivity extends AppCompatActivity {
 
     private void startAnnotatingActivity(){
         Intent intent = new Intent(this, AnnotatingActivity.class);
-        intent.putExtra("distance", activeExerciseViewModel.getDistanceTraveled().getValue());
-        intent.putExtra("time", activeExerciseViewModel.getTotalTime().getValue());
-
-
-        if(activeExerciseViewModel.getStartDateTime() == null){
-            intent.putExtra("year", LocalDateTime.now().getYear());
-            intent.putExtra("month", LocalDateTime.now().getMonth());
-            intent.putExtra("day", LocalDateTime.now().getDayOfMonth());
-        }else{
-            intent.putExtra("year", activeExerciseViewModel.getStartDateTime().getYear());
-            intent.putExtra("month", activeExerciseViewModel.getStartDateTime().getMonth().getValue());
-            intent.putExtra("day", activeExerciseViewModel.getStartDateTime().getDayOfMonth());
-        }
+//        intent.putExtra("distance", activeExerciseViewModel.getDistanceTraveled().getValue());
+//        intent.putExtra("time", activeExerciseViewModel.getTotalTime().getValue());
+//
+//
+//        if(activeExerciseViewModel.getStartDateTime() == null){
+//            intent.putExtra("year", LocalDateTime.now().getYear());
+//            intent.putExtra("month", LocalDateTime.now().getMonth());
+//            intent.putExtra("day", LocalDateTime.now().getDayOfMonth());
+//        }else{
+//            intent.putExtra("year", activeExerciseViewModel.getStartDateTime().getYear());
+//            intent.putExtra("month", activeExerciseViewModel.getStartDateTime().getMonth().getValue());
+//            intent.putExtra("day", activeExerciseViewModel.getStartDateTime().getDayOfMonth());
+//        }
 
         startActivity(intent);
     }

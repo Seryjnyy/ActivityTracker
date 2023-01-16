@@ -20,6 +20,7 @@
                 android:id="@+id/trackExercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
                 android:text="Track exercise" />
 
             <androidx.cardview.widget.CardView

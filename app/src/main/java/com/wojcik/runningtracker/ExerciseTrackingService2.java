@@ -61,8 +61,8 @@ public class ExerciseTrackingService2 extends Service {
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Tracking your location")
                 .setContentIntent(pendingIntent)
-                .setContentText("We on your ass boy")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setContentText("Distance : 0.0km   Time: 00:00:00")
+                .setPriority(NotificationCompat.PRIORITY_LOW);
 
         return notificationBuilder.build();
     }
@@ -77,8 +77,7 @@ public class ExerciseTrackingService2 extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         CharSequence name = "Running tracker channel";
         String description = "Channel for Running tracker app";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
         channel.setDescription(description);
         notificationManager.createNotificationChannel(channel);
 
@@ -123,7 +122,7 @@ public class ExerciseTrackingService2 extends Service {
                             // Update last valid location
                             lastLocationUsedForDistanceTraveled.set(lastLocationReceived);
 
-//                            updateNotificationText();
+                            updateNotificationText();
                         }
                 }}
 
@@ -142,7 +141,7 @@ public class ExerciseTrackingService2 extends Service {
 
     // TODO : Update notification text to show distance and time maybe
     private void updateNotificationText(){
-        notificationBuilder.setContentText("Distance :" + TextFormatter.formatDistance(getCumulativeDistanceTraveled()) + " Time :" + TextFormatter.formatTime(getCumulativeTime()));
+        notificationBuilder.setContentText("Distance :" + TextFormatter.formatDistance(getCumulativeDistanceTraveled()) + "   Time :" + TextFormatter.formatTime(getCumulativeTime()));
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
